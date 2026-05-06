@@ -6,7 +6,12 @@ declare global {
 		google?: {
 			accounts: {
 				id: {
-					initialize: (cfg: { client_id: string; callback: (r: { credential: string }) => void }) => void;
+					initialize: (cfg: {
+						client_id: string;
+						callback: (r: { credential: string }) => void;
+						ux_mode?: "popup" | "redirect";
+						cancel_on_tap_outside?: boolean;
+					}) => void;
 					renderButton: (el: HTMLElement, cfg: object) => void;
 				};
 			};
@@ -76,6 +81,8 @@ export function AuthModal({ open, onClose, onSuccess }: AuthModalProps) {
 			window.google.accounts.id.initialize({
 				client_id: googleClientId,
 				callback: handleGoogleCredential,
+				ux_mode: "popup",
+				cancel_on_tap_outside: false,
 			});
 			window.google.accounts.id.renderButton(googleBtnRef.current, {
 				theme: "outline",
