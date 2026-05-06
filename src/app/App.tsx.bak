@@ -1,0 +1,30 @@
+import { Navbar } from "./components/Navbar";
+import { LampDemo } from "./components/LampDemo";
+import { Hero } from "./components/Hero";
+import { Features } from "./components/Features";
+import { HowItWorks } from "./components/HowItWorks";
+import { Pricing } from "./components/Pricing";
+import { Testimonials } from "./components/Testimonials";
+import { CTABanner } from "./components/CTABanner";
+import { Footer } from "./components/Footer";
+
+export default function App() {
+  return (
+    <div className="min-h-screen font-inter">
+      <style>{`
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+      `}</style>
+
+      <Navbar />
+      <LampDemo />
+      <Hero />
+      <Features />
+      <HowItWorks />
+      <Pricing />
+      <Testimonials />
+      <CTABanner />
+      <Footer />
+    </div>
+  );
+}
