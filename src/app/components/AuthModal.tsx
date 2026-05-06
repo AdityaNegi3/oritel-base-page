@@ -43,12 +43,36 @@ export function AuthModal({ open, onClose, onSuccess }: AuthModalProps) {
 
 	const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-	// Mount Google Sign-In button when modal opens
+	// Mount Google Sign-In button when modal opens. The Google script can arrive
+	// after the modal renders on production CDNs, so retry briefly instead of
+	// leaving an empty button slot.
 	useEffect(() => {
 		if (!open || !googleClientId) return;
 
+		let cancelled = false;
+		let attempts = 0;
+		let retry: ReturnType<typeof setTimeout> | undefined;
+
+		const ensureGoogleScript = () => {
+			if (
+				document.querySelector<HTMLScriptElement>(
+					'script[src="https://accounts.google.com/gsi/client"]'
+				)
+			) {
+				return;
+			}
+
+			const script = document.createElement("script");
+			script.src = "https://accounts.google.com/gsi/client";
+			script.async = true;
+			script.defer = true;
+			document.head.appendChild(script);
+		};
+
 		const init = () => {
+			if (cancelled) return;
 			if (!googleBtnRef.current || !window.google?.accounts?.id) return;
+			googleBtnRef.current.innerHTML = "";
 			window.google.accounts.id.initialize({
 				client_id: googleClientId,
 				callback: handleGoogleCredential,
@@ -62,12 +86,24 @@ export function AuthModal({ open, onClose, onSuccess }: AuthModalProps) {
 			});
 		};
 
-		if (window.google?.accounts?.id) {
-			init();
-		} else {
-			const t = setTimeout(init, 800);
-			return () => clearTimeout(t);
-		}
+		const initWhenReady = () => {
+			if (window.google?.accounts?.id) {
+				init();
+				return;
+			}
+			if (attempts < 25) {
+				attempts += 1;
+				retry = setTimeout(initWhenReady, 200);
+			}
+		};
+
+		ensureGoogleScript();
+		initWhenReady();
+
+		return () => {
+			cancelled = true;
+			if (retry) clearTimeout(retry);
+		};
 	}, [open, googleClientId]);
 
 	const handleGoogleCredential = async (response: { credential: string }) => {
