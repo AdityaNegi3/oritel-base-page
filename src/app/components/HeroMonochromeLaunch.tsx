@@ -14,9 +14,9 @@ const rooms: { num: string; status: RoomStatus }[] = [
 ];
 
 const roomColor: Record<RoomStatus, string> = {
-  occupied: "bg-[#4ade80] text-[#14532d]",
-  available: "bg-[#2a2a2a] text-[#888]",
-  reserved: "bg-[#fb923c] text-[#7c2d12]",
+  occupied:  "bg-[#4ade80] text-[#14532d]",
+  available: "bg-[#262626] text-[#666]",
+  reserved:  "bg-[#fb923c] text-[#7c2d12]",
 };
 
 const arrivals = [
@@ -28,101 +28,114 @@ const arrivals = [
   { initials: "G", name: "G. Verma",  room: "Room 108", time: "20:00" },
 ];
 
-const barHeights = [30, 45, 35, 55, 40, 60, 50, 75, 55, 80, 65, 100];
+const barHeights = [28, 42, 33, 52, 38, 58, 48, 72, 53, 78, 63, 100];
 
 function DashboardMockup() {
   return (
-    <div className="w-full rounded-2xl border border-neutral-200 bg-white shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden text-left select-none">
-      {/* grid layout */}
-      <div className="grid grid-cols-[200px_1fr_1fr] grid-rows-[auto_auto] divide-x divide-y divide-neutral-100">
+    /* outer wrapper — subtle shadow + bg to sell the "card" feel */
+    <div className="w-full rounded-2xl bg-neutral-100 p-2.5 shadow-[0_16px_64px_rgba(0,0,0,0.10)] select-none text-left">
+      {/* bento grid: 4 cols, 2 rows, all children are individually rounded cards */}
+      <div className="grid grid-cols-[180px_1fr_120px_140px] grid-rows-2 gap-2">
 
-        {/* Room Status — spans 2 rows */}
-        <div className="bg-[#111] text-white row-span-2 p-4 flex flex-col gap-3">
-          <p className="text-[9px] uppercase tracking-[0.3em] text-[#666] mb-1">Room Status</p>
-          <div className="grid grid-cols-4 gap-1">
+        {/* ── Room Status ─── col 1, row 1-2 */}
+        <div className="row-span-2 rounded-xl bg-[#0f0f0f] p-4 flex flex-col gap-3">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-600">Room Status</p>
+          <div className="grid grid-cols-4 gap-[5px]">
             {rooms.map((r) => (
               <div
                 key={r.num}
-                className={`rounded-md text-[10px] font-semibold text-center py-1.5 leading-none ${roomColor[r.status]}`}
+                className={`rounded-[5px] text-[9px] font-semibold text-center py-1.5 leading-none ${roomColor[r.status]}`}
               >
                 {r.num}
               </div>
             ))}
           </div>
-          <div className="mt-auto pt-3 border-t border-[#222] space-y-1">
-            {[["Occupied", "14"], ["Available", "6"], ["Reserved", "4"]].map(([label, val]) => (
-              <div key={label} className="flex justify-between text-[10px]">
-                <span className="text-[#666]">{label}</span>
-                <span className="text-white font-semibold">{val}</span>
+          <div className="mt-auto pt-3 border-t border-neutral-800 space-y-1.5">
+            {([["Occupied","14"],["Available","6"],["Reserved","4"]] as const).map(([label, val]) => (
+              <div key={label} className="flex justify-between items-center">
+                <span className="text-[9px] text-neutral-500">{label}</span>
+                <span className="text-[9px] font-bold text-white">{val}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Today's Arrivals */}
-        <div className="p-4 col-span-1">
-          <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-2">Today's Arrivals</p>
-          <p className="text-2xl font-bold text-neutral-900 mb-3">
-            12 <span className="text-sm font-normal text-neutral-400">guests</span>
+        {/* ── Today's Arrivals ─── col 2, row 1 */}
+        <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col gap-2.5">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Today's Arrivals</p>
+          <p className="text-xl font-bold text-neutral-900 leading-none">
+            12 <span className="text-xs font-normal text-neutral-400">guests</span>
           </p>
-          <div className="space-y-2">
+          <div className="space-y-2 mt-1">
             {arrivals.map((a) => (
               <div key={a.name} className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-neutral-200 text-neutral-600 text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                <div className="w-5 h-5 rounded-full bg-neutral-100 text-neutral-500 text-[8px] font-bold flex items-center justify-center flex-shrink-0">
                   {a.initials}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-medium text-neutral-800 leading-none">{a.name}</p>
-                  <p className="text-[9px] text-neutral-400">{a.room}</p>
+                  <p className="text-[10px] font-medium text-neutral-800 leading-none">{a.name}</p>
+                  <p className="text-[8px] text-neutral-400">{a.room}</p>
                 </div>
-                <span className="text-[10px] text-neutral-400 font-mono">{a.time}</span>
+                <span className="text-[9px] text-neutral-400 font-mono tabular-nums">{a.time}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Avg Daily Rate */}
-        <div className="p-4 col-span-1">
-          <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-2">Avg Daily Rate</p>
-          <p className="text-2xl font-bold text-neutral-900">₹4,218</p>
-          <p className="text-[10px] text-emerald-500 flex items-center gap-0.5 mt-0.5">
-            <TrendingUp className="w-3 h-3" /> ₹120 vs last week
-          </p>
-          <div className="mt-3 flex items-end gap-0.5 h-12">
+        {/* ── Occupancy Rate ─── col 3, row 1 */}
+        <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Occupancy Rate</p>
+          <div>
+            <p className="text-3xl font-bold text-neutral-900 leading-none">
+              78<span className="text-lg">%</span>
+            </p>
+            <p className="text-[9px] text-emerald-500 flex items-center gap-0.5 mt-1.5">
+              <TrendingUp className="w-2.5 h-2.5" /> 3.2% vs last week
+            </p>
+          </div>
+        </div>
+
+        {/* ── Avg Daily Rate ─── col 4, row 1 */}
+        <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Avg Daily Rate</p>
+          <div>
+            <p className="text-xl font-bold text-neutral-900 leading-none">₹4,218</p>
+            <p className="text-[9px] text-emerald-500 flex items-center gap-0.5 mt-1">
+              <TrendingUp className="w-2.5 h-2.5" /> ₹120 vs last week
+            </p>
+          </div>
+          {/* mini bar chart */}
+          <div className="flex items-end gap-[2px] h-9 mt-2">
             {barHeights.map((h, i) => (
               <div
                 key={i}
-                className={`flex-1 rounded-sm ${i === barHeights.length - 1 ? "bg-neutral-900" : "bg-neutral-200"}`}
+                className={`flex-1 rounded-[2px] ${i === barHeights.length - 1 ? "bg-neutral-900" : "bg-neutral-200"}`}
                 style={{ height: `${h}%` }}
               />
             ))}
           </div>
         </div>
 
-        {/* Occupancy Rate */}
-        <div className="p-4 col-span-1">
-          <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-2">Occupancy Rate</p>
-          <p className="text-4xl font-bold text-neutral-900">78<span className="text-2xl">%</span></p>
-          <p className="text-[10px] text-emerald-500 flex items-center gap-0.5 mt-1">
-            <TrendingUp className="w-3 h-3" /> 3.2% vs last week
-          </p>
-        </div>
-
-        {/* Revenue + Departures */}
-        <div className="col-span-1 grid grid-cols-2 divide-x divide-neutral-100">
-          <div className="bg-neutral-900 p-4">
-            <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-500 mb-2">Revenue Today</p>
-            <p className="text-2xl font-bold text-white">₹1.24L</p>
-            <p className="text-[10px] text-emerald-400 flex items-center gap-0.5 mt-0.5">
-              <TrendingUp className="w-3 h-3" /> 8.3% vs yesterday
+        {/* ── Revenue Today ─── col 2, row 2 */}
+        <div className="rounded-xl bg-neutral-900 p-4 flex flex-col justify-between">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-500">Revenue Today</p>
+          <div>
+            <p className="text-2xl font-bold text-white leading-none">₹1.24L</p>
+            <p className="text-[9px] text-emerald-400 flex items-center gap-0.5 mt-1.5">
+              <TrendingUp className="w-2.5 h-2.5" /> 8.3% vs yesterday
             </p>
           </div>
-          <div className="p-4">
-            <p className="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-2">Departures Today</p>
-            <p className="text-4xl font-bold text-neutral-900">8</p>
-            <p className="text-[10px] text-neutral-400 mt-1">2 pending checkout</p>
+        </div>
+
+        {/* ── Departures Today ─── col 3-4, row 2 */}
+        <div className="col-span-2 rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
+          <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Departures Today</p>
+          <div>
+            <p className="text-4xl font-bold text-neutral-900 leading-none">8</p>
+            <p className="text-[9px] text-neutral-400 mt-1.5">2 pending checkout</p>
           </div>
         </div>
+
       </div>
     </div>
   );
@@ -156,9 +169,10 @@ export function HeroMonochromeLaunch() {
   useEffect(() => {
     if (!sectionRef.current || typeof window === "undefined") { setVisible(true); return; }
     const node = sectionRef.current;
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } });
-    }, { threshold: 0.1 });
+    const obs = new IntersectionObserver(
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }); },
+      { threshold: 0.1 },
+    );
     obs.observe(node);
     return () => obs.disconnect();
   }, []);
@@ -202,12 +216,12 @@ export function HeroMonochromeLaunch() {
         </a>
       </div>
 
-      {/* Dashboard Mockup */}
+      {/* Dashboard bento */}
       <div className="w-full mt-2">
         <DashboardMockup />
       </div>
 
-      {/* Stats */}
+      {/* Stats row */}
       <div className="w-full border-t border-neutral-200/60 pt-8 grid grid-cols-3 gap-6">
         {stats.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center gap-1">
