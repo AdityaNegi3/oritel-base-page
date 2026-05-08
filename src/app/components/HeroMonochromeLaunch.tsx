@@ -32,26 +32,32 @@ const barHeights = [28, 42, 33, 52, 38, 58, 48, 72, 53, 78, 63, 100];
 
 function DashboardMockup() {
   return (
-    <div className="w-full rounded-2xl bg-neutral-100 p-2.5 shadow-[0_16px_64px_rgba(0,0,0,0.10)] select-none text-left">
+    <div className="w-full rounded-2xl bg-neutral-100 p-2 sm:p-2.5 shadow-[0_16px_64px_rgba(0,0,0,0.10)] select-none text-left">
       {/*
-        Grid: 4 cols, 2 rows
-        Col widths: [hero-text wide] [arrivals] [narrow stat] [narrow stat]
-        Row 1: Headline card (col1-2) | Occupancy (col3) | ADR (col4)
-        Row 2: Room Status (col1)     | Arrivals (col2)  | Revenue (col3) | Departures (col4)
-      */}
-      <div className="grid grid-cols-[1fr_1fr_140px_160px] grid-rows-2 gap-2">
+        Mobile (default): 2-col grid
+          Row 1: Headline (col-span-2)
+          Row 2: Occupancy | ADR
+          Row 3: Room Status (col-span-2)
+          Row 4: Arrivals (col-span-2)
+          Row 5: Revenue | Departures
 
-        {/* ── Headline + CTAs ── col 1-2, row 1 */}
-        <div className="col-span-2 rounded-xl bg-white border border-neutral-200/70 p-6 flex flex-col justify-between">
+        Desktop (lg): 4-col bento
+          Row 1: Headline (col 1-2) | Occupancy (col 3) | ADR (col 4)
+          Row 2: Room Status (col 1) | Arrivals (col 2) | Revenue (col 3) | Departures (col 4)
+      */}
+      <div className="grid grid-cols-2 lg:grid-cols-[1fr_1fr_140px_160px] gap-2">
+
+        {/* ── Headline + CTAs ── col-span-2 on all sizes */}
+        <div className="col-span-2 rounded-xl bg-white border border-neutral-200/70 p-5 sm:p-6 flex flex-col justify-between gap-4">
           <div>
-            <h1 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold leading-[1.05] tracking-tight text-neutral-950">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.05] tracking-tight text-neutral-950">
               Every module.
             </h1>
-            <h1 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold leading-[1.05] tracking-tight text-neutral-400">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-[1.05] tracking-tight text-neutral-400">
               One platform.
             </h1>
           </div>
-          <div className="flex gap-2 mt-5">
+          <div className="flex flex-wrap gap-2">
             <a
               href="#pricing"
               className="inline-flex items-center gap-1.5 bg-neutral-950 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-neutral-800 transition-colors"
@@ -67,11 +73,11 @@ function DashboardMockup() {
           </div>
         </div>
 
-        {/* ── Occupancy Rate ── col 3, row 1 */}
+        {/* ── Occupancy Rate ── col 1 on mobile, col 3 on lg */}
         <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Occupancy Rate</p>
           <div>
-            <p className="text-3xl font-bold text-neutral-900 leading-none">
+            <p className="text-2xl sm:text-3xl font-bold text-neutral-900 leading-none mt-2">
               78<span className="text-lg">%</span>
             </p>
             <p className="text-[9px] text-emerald-500 flex items-center gap-0.5 mt-1.5">
@@ -80,16 +86,16 @@ function DashboardMockup() {
           </div>
         </div>
 
-        {/* ── Avg Daily Rate ── col 4, row 1 */}
+        {/* ── Avg Daily Rate ── col 2 on mobile, col 4 on lg */}
         <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Avg Daily Rate</p>
           <div>
-            <p className="text-xl font-bold text-neutral-900 leading-none">₹4,218</p>
+            <p className="text-lg sm:text-xl font-bold text-neutral-900 leading-none mt-2">₹4,218</p>
             <p className="text-[9px] text-emerald-500 flex items-center gap-0.5 mt-1">
               <TrendingUp className="w-2.5 h-2.5" /> ₹120 vs last week
             </p>
           </div>
-          <div className="flex items-end gap-[2px] h-9 mt-2">
+          <div className="flex items-end gap-[2px] h-8 mt-2">
             {barHeights.map((h, i) => (
               <div
                 key={i}
@@ -100,10 +106,10 @@ function DashboardMockup() {
           </div>
         </div>
 
-        {/* ── Room Status ── col 1, row 2 */}
-        <div className="rounded-xl bg-[#0f0f0f] p-4 flex flex-col gap-2.5">
+        {/* ── Room Status ── full width on mobile, col 1 on lg */}
+        <div className="col-span-2 lg:col-span-1 rounded-xl bg-[#0f0f0f] p-4 flex flex-col gap-2.5">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-600">Room Status</p>
-          <div className="grid grid-cols-4 gap-[5px]">
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 gap-[5px]">
             {rooms.map((r) => (
               <div
                 key={r.num}
@@ -113,9 +119,9 @@ function DashboardMockup() {
               </div>
             ))}
           </div>
-          <div className="mt-auto pt-2 border-t border-neutral-800 space-y-1">
+          <div className="mt-auto pt-2 border-t border-neutral-800 flex gap-4 sm:gap-6 lg:block lg:space-y-1">
             {([["Occupied","14"],["Available","6"],["Reserved","4"]] as const).map(([label, val]) => (
-              <div key={label} className="flex justify-between items-center">
+              <div key={label} className="flex justify-between items-center lg:flex-row gap-1">
                 <span className="text-[9px] text-neutral-500">{label}</span>
                 <span className="text-[9px] font-bold text-white">{val}</span>
               </div>
@@ -123,13 +129,13 @@ function DashboardMockup() {
           </div>
         </div>
 
-        {/* ── Today's Arrivals ── col 2, row 2 */}
-        <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col gap-2">
+        {/* ── Today's Arrivals ── full width on mobile, col 2 on lg */}
+        <div className="col-span-2 lg:col-span-1 rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col gap-2">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Today's Arrivals</p>
           <p className="text-xl font-bold text-neutral-900 leading-none">
             12 <span className="text-xs font-normal text-neutral-400">guests</span>
           </p>
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-y-2 gap-x-4">
             {arrivals.map((a) => (
               <div key={a.name} className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-full bg-neutral-100 text-neutral-500 text-[8px] font-bold flex items-center justify-center flex-shrink-0">
@@ -145,22 +151,22 @@ function DashboardMockup() {
           </div>
         </div>
 
-        {/* ── Revenue Today ── col 3, row 2 */}
+        {/* ── Revenue Today ── col 1 on mobile, col 3 on lg */}
         <div className="rounded-xl bg-neutral-900 p-4 flex flex-col justify-between">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-500">Revenue Today</p>
           <div>
-            <p className="text-2xl font-bold text-white leading-none">₹1.24L</p>
+            <p className="text-xl sm:text-2xl font-bold text-white leading-none mt-2">₹1.24L</p>
             <p className="text-[9px] text-emerald-400 flex items-center gap-0.5 mt-1.5">
               <TrendingUp className="w-2.5 h-2.5" /> 8.3% vs yesterday
             </p>
           </div>
         </div>
 
-        {/* ── Departures Today ── col 4, row 2 */}
+        {/* ── Departures Today ── col 2 on mobile, col 4 on lg */}
         <div className="rounded-xl bg-white border border-neutral-200/70 p-4 flex flex-col justify-between">
           <p className="text-[8px] uppercase tracking-[0.35em] text-neutral-400">Departures Today</p>
           <div>
-            <p className="text-4xl font-bold text-neutral-900 leading-none">8</p>
+            <p className="text-3xl sm:text-4xl font-bold text-neutral-900 leading-none mt-2">8</p>
             <p className="text-[9px] text-neutral-400 mt-1.5">2 pending checkout</p>
           </div>
         </div>
@@ -209,7 +215,7 @@ export function HeroMonochromeLaunch() {
   return (
     <section
       ref={sectionRef}
-      className={`relative mx-auto flex w-full max-w-6xl flex-col items-center text-center gap-8 px-6 pb-24 pt-28 lg:pt-36 lg:px-12 transition-opacity duration-700 ${
+      className={`relative mx-auto flex w-full max-w-6xl flex-col items-center text-center gap-8 px-4 sm:px-6 pb-20 sm:pb-24 pt-24 sm:pt-28 lg:pt-36 lg:px-12 transition-opacity duration-700 ${
         visible ? "motion-safe:animate-[hero-fade-up_0.9s_cubic-bezier(.25,.9,.3,1)_forwards]" : "opacity-0"
       }`}
     >
@@ -225,11 +231,11 @@ export function HeroMonochromeLaunch() {
       </div>
 
       {/* Stats row */}
-      <div className="w-full border-t border-neutral-200/60 pt-8 grid grid-cols-3 gap-6">
+      <div className="w-full border-t border-neutral-200/60 pt-6 sm:pt-8 grid grid-cols-3 gap-4 sm:gap-6">
         {stats.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center gap-1">
-            <span className="text-2xl md:text-3xl font-bold text-neutral-950 tracking-tight">{value}</span>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400">{label}</span>
+            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-neutral-950 tracking-tight">{value}</span>
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-neutral-400">{label}</span>
           </div>
         ))}
       </div>
