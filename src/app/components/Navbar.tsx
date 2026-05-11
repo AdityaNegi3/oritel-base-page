@@ -110,15 +110,7 @@ export function Navbar({ user, onSignIn, onSignOut }: NavbarProps) {
 									</div>
 								)}
 							</div>
-						) : (
-							/* ── Get Started (unauthenticated) ── */
-							<button
-								onClick={onSignIn}
-								className="text-sm font-semibold bg-neutral-950 text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition-colors"
-							>
-								Get Started
-							</button>
-						)}
+						) : null}
 					</div>
 				</div>
 			</div>
