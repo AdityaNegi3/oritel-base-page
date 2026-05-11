@@ -205,18 +205,8 @@ export function Pricing() {
                 <div className="mb-6 pb-6 border-b border-current/10">
                   {isEnterprise ? (
                     <>
-                      <div className="text-sm text-neutral-500 mb-1">Starting at</div>
-                      <div className="flex items-baseline gap-1 mb-1">
-                        <span className="text-3xl font-semibold">
-                          ₹
-                          <NumberFlow
-                            value={period === "yearly" ? 49999 * 10 : 49999}
-                            format={{ useGrouping: true, maximumFractionDigits: 0 }}
-                            className="text-3xl font-semibold"
-                          />
-                        </span>
-                        <span className="text-sm text-neutral-500">{period === "yearly" ? "/yr" : "/mo"}</span>
-                      </div>
+                      <div className="text-3xl font-semibold mb-1">Custom pricing</div>
+                      <div className="text-xs text-neutral-500">Contact us for a tailored quote</div>
                     </>
                   ) : (
                     <>
@@ -266,15 +256,24 @@ export function Pricing() {
                 </ul>
 
                 {/* CTA */}
-                <button
-                  disabled
-                  className={cn(
-                    "w-full rounded-xl py-3 text-sm font-semibold cursor-not-allowed opacity-50 transition-all duration-200",
-                    isPro ? "bg-white text-neutral-900" : "bg-neutral-950 text-white",
-                  )}
-                >
-                  Coming Soon
-                </button>
+                {isEnterprise ? (
+                  <a
+                    href="mailto:support@oritels.com"
+                    className="w-full rounded-xl py-3 text-sm font-semibold text-center block bg-neutral-950 text-white hover:bg-neutral-800 transition-all duration-200"
+                  >
+                    Contact Sales
+                  </a>
+                ) : (
+                  <button
+                    disabled
+                    className={cn(
+                      "w-full rounded-xl py-3 text-sm font-semibold cursor-not-allowed opacity-50 transition-all duration-200",
+                      isPro ? "bg-white text-neutral-900" : "bg-neutral-950 text-white",
+                    )}
+                  >
+                    Coming Soon
+                  </button>
+                )}
               </div>
             );
           })}
